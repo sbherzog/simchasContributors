@@ -1,0 +1,59 @@
+﻿@using simchasContributorsData
+@{
+    ViewBag.Title = "simchasCcontributions";
+}
+
+<h2 style="text-align:center; font-weight:bold;">Ccontributions for the @Model.simchaName simcha</h2>
+<div class="col-md-6"><input id="contributorSearch" class="form-control col-xs-10" placeholder="search" /> <button class="btn btn-danger col-xs-2" id="clearSearch">clear</button></div>
+<div class="col-md-6"><h2 style="margin-top:0px; text-align:right">Total: @Model.simchaAmount.ToString("C") </h2></div>
+<div class="clearfix"></div>
+
+<form id='FormContributorsSimcha' method='post' action='/Home/AddNewContributorsSimcha/'>
+    <input type="hidden" name="SID" value="@Model.simchaID" />
+    <input type="hidden" name="SName" value="@Model.simchaName" />
+
+    <table class="table table-hover table-striped table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Ccontribute</th>
+                <th>Name</th>
+                <th>Balance</th>
+                <th>Always Include</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ int counter = 0; }
+            @foreach (ContributorsSimchaClass p in Model.ContributorsSimcha)
+            {
+                <tr class="table-row" data-personID="@p.personId">
+                    <td>
+                        <input type="hidden" name="c[@counter].personId" value="@p.personId" />
+                        <input type="hidden" name="c[@counter].simchaID" value="@Model.simchaID" />
+                        <input type="checkbox" name="c[@counter].Contribute" class="ContributeBool checkbox-switch" value="true" @(p.ContributeBool == "TRUE" ? "checked" : "") />
+                        <input type="hidden" name="c[@counter].Contribute" value="false" />
+                    </td>
+                    <td>@p.firstName @p.lastName</td>
+                    <td>@p.DepositAmount.ToString("C")</td>
+                    <td><span class="glyphicon @(p.alwaysInclude ? "glyphicon-ok" : "")"></span></td>
+                    <td>
+                        <input class="form-control amount-value" name="c[@counter].amount" value="@(p.amount)" />
+                    </td>
+                </tr>
+                counter = counter + 1;
+            }
+        </tbody>
+    </table>
+
+    <button id="updateContributorsSimcha" class="btn btn-primary">Update</button>
+
+</form>
+
+
+
+@section scripts
+{
+    <script src="/Scripts/myJSFile.js"></script>
+}
+
+

@@ -1,0 +1,14 @@
+﻿@using simchasContributorsData
+@{
+    ViewBag.Title = "PrintContributions";
+}
+
+<h2 style="text-align:center; font-weight:bold;">Contributions List fot the @Model.simchaName simcha</h2>
+    @foreach (ContributorsSimchaClass p in Model.ContributorsSimcha)
+    {
+        if (p.ContributeBool == "TRUE")
+        {
+            @p.firstName @p.lastName <br />
+        }
+    }
+

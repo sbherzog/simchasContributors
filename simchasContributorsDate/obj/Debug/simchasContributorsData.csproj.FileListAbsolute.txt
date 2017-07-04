@@ -1,0 +1,5 @@
+\\psf\home\documents\visual studio 2015\Projects\simchasContributors\simchasContributorsDate\bin\Debug\simchasContributorsDate.dll
+\\psf\home\documents\visual studio 2015\Projects\simchasContributors\simchasContributorsDate\bin\Debug\simchasContributorsDate.pdb
+\\psf\home\documents\visual studio 2015\Projects\simchasContributors\simchasContributorsDate\obj\Debug\simchasContributorsData.csprojResolveAssemblyReference.cache
+\\psf\home\documents\visual studio 2015\Projects\simchasContributors\simchasContributorsDate\obj\Debug\simchasContributorsDate.dll
+\\psf\home\documents\visual studio 2015\Projects\simchasContributors\simchasContributorsDate\obj\Debug\simchasContributorsDate.pdb

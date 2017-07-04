@@ -1,0 +1,86 @@
+﻿@using simchasContributorsData
+@{
+    ViewBag.Title = "Shimcha Page";
+}
+
+@if (TempData["successful"] != null)
+{
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>@TempData["successful"]</strong>
+    </div>
+}
+
+<h1 style="text-align:center; font-weight:bold">Simchas</h1>
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#newSimchaModel">New Simcha</button>
+<br /><br />
+<table class="table table-condensed table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Contributions</th>
+            <th>Simcha Name</th>
+            <th>Contributor Count</th>
+            <th>Total</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(simchaClass s in Model.simchas)
+        {
+            <tr>
+                <td>
+                    <form action="/Home/simchasCcontributions/" method="post">
+                        <input type="hidden" name="simchaId" value="@s.simchaId" />
+                        <button class="btn btn-primary">Contributions</button>
+                    </form>
+                </td>
+                <td>@s.simchaName</td>
+                <td>@s.simchaContributionsCount /  @Model.count</td>
+                <td>@s.simchaTotalMoney.ToString("C")</td>
+                <td>@s.simchaDate.ToShortDateString()</td>
+                <td>
+                    <form action="/Home/PrintContributions/" method="post">
+                        <input type="hidden" name="simchaId" value="@s.simchaId" />
+                        <button class="btn btn-success">Print Contributions</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        <tr>
+
+        </tr>
+    </tbody>
+</table>
+
+
+
+<div id="newSimchaModel" class="modal fade" role="dialog">
+    <form method="post" action="/Home/addNewSimcha/">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:aqua;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New Simcha</h4>
+                </div>
+                <div class="modal-body">
+                    <label>Simcha Name</label>
+                    <input type="text" id="datepicker" class="form-control" name="simchaName" placeholder="Simcha Name" />
+                    <br />
+                    <label>Date</label>
+                    <input type="date" class="form-control" name="simchaDate" placeholder="Simcha Date" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section scripts
+{
+    <script src="/Scripts/myJSFile.js"></script>
+}

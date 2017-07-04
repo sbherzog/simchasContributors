@@ -1,0 +1,187 @@
+﻿@using simchasContributorsData
+@{
+    ViewBag.Title = "contributors";
+}
+
+@if (TempData["successful"] != null)
+{
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>@TempData["successful"]</strong>
+    </div>
+}
+
+<h2 style="text-align:center; font-weight:bold;">Contributors</h2>
+<div class="col-md-3"><button type="button" class="btn btn-info" data-toggle="modal" data-target="#newContributors">New Contributors</button></div>
+<div class="col-md-6"><input id="contributorSearch" class="form-control col-xs-10" placeholder="search" /> <button id="clearSearch" class="btn btn-danger col-xs-2">clear</button></div>
+<div class="col-md-3"><h2 style="margin-top:0px; text-align:right">Total: @Model.total.ToString("C")</h2></div>
+<div class="clearfix"></div>
+
+<table class="table table-hover table-striped table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>Deposit</th>
+            <th>Name</th>
+            <th>Cell</th>
+            <th>Email</th>
+            <th>Always Include</th>
+            <th>Balance</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (PeopleClass p in Model.people)
+        {
+            <tr class="table-row" data-personID="@p.personId">
+                <td><button class="btn btn-success add-Deposit" data-toggle="modal" data-target="#newDeposit">Deposit</button></td>
+                <td><span class="first-name">@p.firstName</span> <span class="last-name">@p.lastName</span></td>
+                <td class="cell-phone">@p.cellPhone</td>
+                <td class="email">@p.email</td>
+                <td class="alwaysInclude" data-include="@(p.alwaysInclude)"><span class="glyphicon @(p.alwaysInclude? "glyphicon-ok" : "glyphicon-remove")"></span></td>
+                <td>@p.DepositAmount.ToString("C")</td>
+                <td>
+                    <form method="post" action="/home/contributorsHistory/" style="display:inline">
+                        <input type="hidden" name="id" value="@p.personId" />
+                        <button class="btn btn-primary">Show History</button>
+                    </form>
+                    <button class="btn btn-danger btn-edit-person" data-toggle="modal" data-target="#editContributors">Edit</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!--NEW Person-->
+<div id="newContributors" class="modal fade" role="dialog">
+    <form method="post" action="/Home/addNewContributors/">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:aqua;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New Contributors</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-md-6">
+                        <label for="firstName">First Name:</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="email">Email:</label>
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Email Adress">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="cellPhone">Cell Phone:</label>
+                        <input type="tel" class="form-control" id="cellPhone" name="cellPhone" placeholder="Cell Phone">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="alwaysInclide">Always Inclide:</label>
+                        <input type="checkbox" value="true" class="" id="alwaysInclide" name="alwaysInclude">
+                        <input type="hidden" value="false" class="" id="alwaysInclide" name="alwaysInclude">
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr />
+                    <div class="form-group col-md-6">
+                        <label for="DepositAmount">Initial Deposit:</label>
+                        <input type="text" class="form-control" id="DepositAmount" name="DepositAmount" placeholder="Initial Deposit">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="DepositDate">Created Date:</label>
+                        <input type="date" class="form-control" id="DepositDate" name="DepositDate" placeholder="Created Date">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!--NEW DEPOSIT-->
+<div id="newDeposit" class="modal fade" role="dialog">
+    <form method="post" action="/Home/addNewDeposit/">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New Deposit</h4>
+                </div>
+                <div class="modal-body">
+                    <input name="DepositpersonId" id="DepositpersonId" type="hidden" />
+                    <div class="form-group col-md-6">
+                        <label for="DepositAmount">Initial Deposit:</label>
+                        <input type="text" class="form-control" id="DepositAmount" name="DepositAmount" placeholder="Initial Deposit">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="DepositDate">Created Date:</label>
+                        <input type="date" class="form-control" id="DepositDate" name="DepositDate" placeholder="Created Date">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--EDIT PERSON-->
+
+<div id="editContributors" class="modal fade" role="dialog">
+    <form method="post" action="/Home/EditPerson/">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:aqua;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Contributors</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="edit_Id" name="personId">
+                    <div class="form-group col-md-6">
+                        <label for="firstName">First Name:</label>
+                        <input type="text" class="form-control" id="edit_firstName" name="firstName" placeholder="First Name">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" class="form-control" id="edit_lastName" name="lastName" placeholder="Last Name">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="email">Email:</label>
+                        <input type="text" class="form-control" id="edit_email" name="email" placeholder="Email Adress">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="cellPhone">Cell Phone:</label>
+                        <input type="tel" class="form-control" id="edit_cellPhone" name="cellPhone" placeholder="Cell Phone">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="alwaysInclide">Always Inclide:</label>
+                        <input type="checkbox" value="true" class="" id="edit_alwaysInclide" name="alwaysInclude">
+                        <input type="hidden" value="false" class="" name="alwaysInclude">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Update</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section scripts
+{
+<script src="/Scripts/myJSFile.js"></script>
+}
